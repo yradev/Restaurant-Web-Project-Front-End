@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +13,52 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.menu-edit-header {
+  font-size: xx-large;
+  font-weight: bold;
+  color: blanchedalmond
+}
+
+.menu-edit-text {
+  font-size: large;
+  font-weight: bold;
+  color: aliceblue
+}
+
+main {
+  background: url(/public/imgs/main.jpg) no-repeat center center fixed;
+  background-size: 100% 100%;
+}
+
+main .overlay {
+  background: rgba(33, 37, 41, 0.85);
+}
+
+img {
+  opacity: .4;
+}
+
+.restaurantMenuFont {
+  font-family: 'Abril Fatface', cursive;
+  margin: 5px;
+}
+
+.header-border {
+  border-color:black;
+  border-style: ridge;
+  border-radius: 20px;
+  opacity: .5;
+  background-color: dimgray;
+  box-shadow: 5px 10px 20px silver;
+}
+
+.dropdown:hover>.dropdown-menu {
+  /* display: block; */
+}
+
+.dropdown>.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+    /* pointer-events: none; */
 }

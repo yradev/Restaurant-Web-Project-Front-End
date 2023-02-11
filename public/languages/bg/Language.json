@@ -1,0 +1,34 @@
+{
+    "homeNavigation":"Начало",
+    "menuNavigation":"Menu",
+    "aboutUsNavigation":"About Us",
+    "loginNavigation":"Login",
+    "registerNavigation":"Register",
+
+    "viewOurMenuButton":"View Our Menu",
+    "closeButton":"Close",
+    "submitButton":"Submit",
+
+    "loginHeader": "Login",
+    "registerHeader": "Register",
+
+
+    "emailAddressLabel": "Email address:",
+    "passwordLabel":"Password:",
+    "rememberMeLabel":"Remember me",
+    "confirmPasswordLabel":"Confirm password:",
+
+
+    "emailAddressPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+
+
+    "userRegisteredAlert":"User is registered successfully!",
+
+    "serverDownError": "Server is down!",
+    "notFoundEmailError": "We dont have user with this email!",
+    "conflictEmailError": "We have user with this email!",
+    "wrongPasswordError": "Password is wrong!",
+    "notEqualPasswords": "Passwords are not equal!"
+}
