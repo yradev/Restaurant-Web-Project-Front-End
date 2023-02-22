@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { get } from "../../Connection";
 import { DeliveryBagContext, FavoritesContext } from "../../Contexts";
 import { addFavoriteItem, addItemToDeliveryBag, checkItemInFavorites, removeFavoriteItem } from "../../Storage";
-import Loading from "../Loading";
+import Loading from "../fragments/Loading";
 
 export default function Items({ categoryPosition, categoryName }) {
     const [items, setItems] = useState();

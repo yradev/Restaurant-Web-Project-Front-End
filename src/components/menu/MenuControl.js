@@ -36,7 +36,7 @@ export default function MenuControl() {
                     {categoryPosition !== undefined ?
                         (
                         <Items 
-                            categoryPosition={categoryPosition} 
+                            categoryPosition={parseInt(categoryPosition)} 
                             categoryName={setCategoryName}/>)
                         :
                         (<Categories />)}

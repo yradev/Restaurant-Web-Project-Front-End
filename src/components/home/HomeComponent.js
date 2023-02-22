@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { get } from "../../Connection";
-import Loading from "../Loading";
+import Loading from "../fragments/Loading";
 
 export default function HomeComponent() {
     const { t } = useTranslation();

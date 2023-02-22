@@ -5,7 +5,7 @@ import { getRoles } from "../../../Auth";
 import { get, put } from "../../../Connection";
 import NotAllowed from "../../errors/NotAllowed";
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
-import Loading from "../../Loading";
+import Loading from "../../fragments/Loading";
 
 export default function CoreSettings() {
     const [roles, setRoles] = useState();

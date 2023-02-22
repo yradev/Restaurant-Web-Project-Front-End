@@ -126,9 +126,13 @@ export function addFavoriteItem(categoryPosition, itemPosition) {
 };
 
 export function removeFavoriteItem(categoryPosition, itemPosition) {
-    const data = getFavoriteITems();
-    localStorage.setItem('favorites', JSON.stringify(data.filter(a => a.categoryPosition === categoryPosition && a.itemPosition !== itemPosition)));
 
+    localStorage
+        .setItem('favorites',
+            JSON.stringify(
+                getFavoriteITems()
+                    .filter(a => !(a.categoryPosition == categoryPosition && a.itemPosition == itemPosition))
+            ));
 }
 
 export function checkItemInFavorites(categoryPosition, itemPosition) {
@@ -147,9 +151,9 @@ export function addItemToDeliveryBag(categoryPosition, itemPosition) {
     const data = getItemsFromDeliveryBag();;
 
     const item = data.filter(a => a.categoryPosition === categoryPosition && a.itemPosition === itemPosition)[0];
-    if(item!=null){
-        item.count = item.count+1;
-    }else{
+    if (item != null) {
+        item.count = item.count + 1;
+    } else {
         data.push({ categoryPosition, itemPosition, count: 1 });
     }
 
@@ -160,13 +164,13 @@ export function removeItemFromDeliveryBag(categoryPosition, itemPosition) {
     const data = getItemsFromDeliveryBag();;
 
     const item = data.filter(a => a.categoryPosition === categoryPosition && a.itemPosition === itemPosition)[0];
-    if(item!=null){
-        item.count = item.count+-1;
+    if (item != null) {
+        item.count = item.count + -1;
         localStorage.setItem('deliveriesBag', JSON.stringify(data));
 
     }
 }
 
 export function checkItemsAvaliableInDeliveryBag() {
-    return getItemsFromDeliveryBag()!=null;
+    return getItemsFromDeliveryBag() != null;
 }

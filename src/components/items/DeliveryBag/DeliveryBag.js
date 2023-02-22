@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import { get } from "../../../Connection";
 import { AuthenticationContext, DeliveryBagContext } from "../../../Contexts";
 import Login from "../../auth/Login";
-import Pagination from "../../fragments/Pagination";
-import Loading from "../../Loading";
+import Loading from "../../fragments/Loading";
+import SendDelivery from "./SendDelivery";
+import ItemsView from "./ItemsView";
+import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 export default function DeliveryBag() {
+    const [showDeliveryBag, setShowDeliveryBag] = useState(false);
     const [items, setItems] = useState();
-    const [itemsPage, setItemsPage] = useState(0);
     const [isLoginOpened, setIsLoginOpened] = useState(false);
+    const [isContinueOpened, setIsContinueOpened] = useState(false);
+    const [timer,setTimer] = useState();
+    const { t } = useTranslation();
+
 
     const deliveryBagContext = useContext(DeliveryBagContext);
     const authentication = useContext(AuthenticationContext);
@@ -30,16 +38,7 @@ export default function DeliveryBag() {
                     return tempItem;
                 }));
 
-            const itemsSplitBy3 = []
-
-            for (let index = 0; index <= result.length; index += 5) {
-                const currentItem = result
-                    .filter(a => result.indexOf(a) >= index)
-                    .slice(0, 5);
-                itemsSplitBy3.push(currentItem);
-            };
-
-            setItems(itemsSplitBy3);
+            setItems(result);
 
         })()
     }, [deliveryBagContext]);
@@ -51,60 +50,91 @@ export default function DeliveryBag() {
     function addDeliveryHandler() {
         if (!authentication.isLogged) {
             setIsLoginOpened(true);
+        } else {
+            setShowDeliveryBag(false);
+            setIsContinueOpened(true);
         }
     }
-    
+
     function NotEmptyView() {
         return (<>
             <Container>
-                <Row>
-                    <Col>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th style={{ borderTop: 'none' }}>Category Name</th>
-                                    <th style={{ borderTop: 'none' }}>Item Name</th>
-                                    <th style={{ borderTop: 'none' }}>Items Count</th>
-                                    <th style={{ borderTop: 'none' }}>Single Price</th>
-                                    <th style={{ borderTop: 'none' }}>Total Price</th>
-                                    <th style={{ borderTop: 'none' }}>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {items[itemsPage].map(a => (
-                                    <tr key={a.itemPosition}>
-                                        <td>{a.categoryName}</td>
-                                        <td>{a.itemName}</td>
-                                        <td>{a.count}</td>
-                                        <td>{a.price.toFixed(2)}</td>
-                                        <td>{a.total.toFixed(2)}</td>
-                                        <td>A</td>
-                                    </tr>))}
-                            </tbody>
-                        </Table>
-                    </Col>
+                <Row style={{ overflow: 'auto', maxHeight: '300px' }}>
+                    <ItemsView items={items} />
+                </Row>
+                <Row style={{
+                    padding: '15px',
+                    fontSize: 'large',
+                    fontStyle: 'italic'
+                }}>
+                    Total price is 25.00 BGN.
                 </Row>
                 <Row>
                     <Col>
-                        <Pagination items={items} page={itemsPage} setPage={setItemsPage} />
-                    </Col>
-                    <Col>
-                        <Button onClick={addDeliveryHandler}>Continue delivery</Button>
+                        <Button style={{ width: '95%', borderRadius: 25, marginBottom: 10 }} onClick={addDeliveryHandler}>Continue delivery</Button>
                     </Col>
                 </Row>
-                {isLoginOpened ? (<Login setLogin={setIsLoginOpened} notification={'You need to Login to continue!'}/>) : null}
             </Container>
+            {isLoginOpened ? (
+                <Login
+                    setLogin={setIsLoginOpened}
+                    notification={'You need to Login to continue!'}
+                />) :
+                null}
+            {isContinueOpened ? (
+                <SendDelivery
+                    modalOpened={setIsContinueOpened}
+                    items={items}
+                    notification={'You need to Login to continue!'}
+                />) :
+                null}
         </>)
     }
 
     return (<>
-        <div
-            className="dropdown-menu"
-            aria-labelledby="dropdownFavorites"
-            style={{ paddingLeft: 0, color: 'black', left: '-100%' }}>
-            {items.length > 0 ? <NotEmptyView /> : (<>
-                We dont have added deliveries in bag, yet!
-            </>)}
-        </div>
+        <Dropdown
+            show={showDeliveryBag}
+            onMouseEnter={() => {
+                if (!isContinueOpened) {
+                    clearTimeout(timer)
+                    setShowDeliveryBag(true)
+                }
+            }}
+            onMouseLeave={() => {
+                if (!isContinueOpened) {
+                    setTimer(setTimeout(() => {
+                        setShowDeliveryBag(false);
+                    }, 500));
+                }
+            }}>
+
+            <Dropdown.Toggle
+                style={{
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    pointerEvents: 'none',
+                }}
+                id="dropdown-custom-components">
+                <FontAwesomeIcon icon={faCartShopping} style={{
+                    paddingRight: 6,
+                    color: 'green'
+                }} />
+                <span style={{ fontWeight: 'bold', fontSize: 'large', color: '#20b3bb' }}>{t('deliveryBagNavigation')}</span>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu style={{
+                width: '270px',
+                color: 'black',
+                backgroundColor: 'silver',
+                borderRadius: '25px/40px',
+                padding: '5px',
+                margin: 0
+            }}>
+
+                {items.length > 0 ? <NotEmptyView /> : (<>
+                    We dont have added deliveries in bag, yet!
+                </>)}
+            </Dropdown.Menu>
+        </Dropdown>
     </>)
 }
